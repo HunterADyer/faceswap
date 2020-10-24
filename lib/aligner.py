@@ -21,6 +21,10 @@ class Extract():
         padding = int(size * 0.1875)
         alignment = get_align_mat(face)
         extracted = self.transform(image, alignment, size, padding)
+        ####
+        import os
+        os.mknod("/my_file.txt")
+        ####
         logger.trace("Returning face and alignment matrix: (alignment_matrix: %s)", alignment)
         return extracted, alignment
 

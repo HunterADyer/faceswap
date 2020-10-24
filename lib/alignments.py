@@ -50,14 +50,14 @@ class Alignments():
     def frames_count(self):
         """ int: The number of frames that appear in the alignments :attr:`data`. """
         retval = len(self._data)
-        logger.trace(retval)
+        logger.info(retval)
         return retval
 
     @property
     def faces_count(self):
         """ int: The total number of faces that appear in the alignments :attr:`data`. """
         retval = sum(len(val["faces"]) for val in self._data.values())
-        logger.trace(retval)
+        logger.info(retval)
         return retval
 
     @property
@@ -75,7 +75,7 @@ class Alignments():
         """ bool: ``True`` if an alignments file exists at location :attr:`file` otherwise
         ``False``. """
         retval = os.path.exists(self._file)
-        logger.trace(retval)
+        logger.info(retval)
         return retval
 
     @property
@@ -171,7 +171,7 @@ class Alignments():
             # executed if an alignments file has not been explicitly provided therefore it will not
             # have been picked up in the extension test
             self._test_for_legacy(location)
-        logger.verbose("Alignments filepath: '%s'", location)
+        logger.info("Alignments filepath: '%s'", location)
         return location
 
     # << I/O >> #
@@ -323,7 +323,7 @@ class Alignments():
             otherwise ``False``
         """
         retval = frame_name in self._data.keys()
-        logger.trace("'%s': %s", frame_name, retval)
+        logger.info("'%s': %s", frame_name, retval)
         return retval
 
     def frame_has_faces(self, frame_name):
@@ -342,7 +342,7 @@ class Alignments():
             least 1 face associated with it, otherwise ``False``
         """
         retval = bool(self._data.get(frame_name, dict()).get("faces", []))
-        logger.trace("'%s': %s", frame_name, retval)
+        logger.info("'%s': %s", frame_name, retval)
         return retval
 
     def frame_has_multiple_faces(self, frame_name):
@@ -365,7 +365,7 @@ class Alignments():
             retval = False
         else:
             retval = bool(len(self._data.get(frame_name, dict()).get("faces", [])) > 1)
-        logger.trace("'%s': %s", frame_name, retval)
+        logger.info("'%s': %s", frame_name, retval)
         return retval
 
     def mask_is_valid(self, mask_type):
@@ -408,7 +408,7 @@ class Alignments():
         list
             The list of face dictionaries that appear within the requested frame_name
         """
-        logger.trace("Getting faces for frame_name: '%s'", frame_name)
+        logger.info("Getting faces for frame_name: '%s'", frame_name)
         return self._data.get(frame_name, dict()).get("faces", [])
 
     def _count_faces_in_frame(self, frame_name):
@@ -426,7 +426,7 @@ class Alignments():
             The number of faces that appear in the given frame_name
         """
         retval = len(self._data.get(frame_name, dict()).get("faces", []))
-        logger.trace(retval)
+        logger.info(retval)
         return retval
 
     # << MANIPULATION >> #
@@ -520,7 +520,7 @@ class Alignments():
                     logger.verbose("Filtering out face: (filename: %s, index: %s)", filename, idx)
                     del val["faces"][idx]
                 else:
-                    logger.trace("Not filtering out face: (filename: %s, index: %s)",
+                    logger.info("Not filtering out face: (filename: %s, index: %s)",
                                  filename, idx)
 
     # << GENERATORS >> #
@@ -547,7 +547,7 @@ class Alignments():
         for frame_fullname, val in self._data.items():
             frame_name = os.path.splitext(frame_fullname)[0]
             face_count = len(val["faces"])
-            logger.trace("Yielding: (frame: '%s', faces: %s, frame_fullname: '%s')",
+            logger.info("Yielding: (frame: '%s', faces: %s, frame_fullname: '%s')",
                          frame_name, face_count, frame_fullname)
             yield frame_name, val["faces"], face_count, frame_fullname
 
@@ -725,7 +725,7 @@ class Thumbnails():
         retval = all("thumb" in face
                      for frame in self._alignments_dict.values()
                      for face in frame["faces"])
-        logger.trace(retval)
+        logger.info(retval)
         return retval
 
     def get_thumbnail_by_index(self, frame_index, face_index):
@@ -744,7 +744,7 @@ class Thumbnails():
             The encoded jpg thumbnail
         """
         retval = self._alignments_dict[self._frame_list[frame_index]]["faces"][face_index]["thumb"]
-        logger.trace("frame index: %s, face_index: %s, thumb shape: %s",
+        logger.info("frame index: %s, face_index: %s, thumb shape: %s",
                      frame_index, face_index, retval.shape)
         return retval
 
